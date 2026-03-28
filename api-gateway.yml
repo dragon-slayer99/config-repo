@@ -12,14 +12,14 @@ spring:
         - id: cart
           uri: lb://cart-service
           predicates:
-            - Path=/api/cart/**
+            - Path=/api/cart,/api/cart/**
           filters:
             - StripPrefix=1
 
         - id: user
           uri: lb://user-service
           predicates:
-              - Path=/api/user/**
+              - Path=/api/user,/api/user/**
           filters:
               - StripPrefix=1
 
