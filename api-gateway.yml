@@ -7,8 +7,21 @@ spring:
         webflux:
           discovery:
             locator:
-              enabled: true
-              lower-case-service-id: true
+              enabled: false
+      routes:
+        - id: cart
+          uri: lb://cart-service
+          predicates:
+            - Path=/api/cart/**
+          filters:
+            - StripPrefix=1
+
+        - id: user
+          uri: lb://user-service
+          predicates:
+              - Path=/api/user/**
+          filters:
+              - StripPrefix=1
 
 
 eureka:
