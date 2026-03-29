@@ -1,6 +1,7 @@
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       server:
@@ -8,28 +9,30 @@ spring:
           discovery:
             locator:
               enabled: false
-      routes:
-        - id: cart
-          uri: lb://cart-service
-          predicates:
-            - Path=/api/cart,/api/cart/**
-          filters:
+          routes:
+          - id: cart
+            uri:
+              http://localhost:8083
+            predicates:
+            - Path=/api/cart/**
+            filters:
+            - StripPrefix=1
+          
+          - id: user
+            uri:
+              http://localhost:8082
+            predicates:
+            - Path=/api/user/**
+            filters:
             - StripPrefix=1
 
-        - id: user
-          uri: lb://user-service
-          predicates:
-              - Path=/api/user,/api/user/**
-          filters:
-              - StripPrefix=1
-
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    prefer-ip-address: true
+          - id: product
+            uri:
+              http://localhost:8081
+            predicates:
+            - Path=/api/products/**
+            filters:
+            - StripPrefix=1
 
 server:
   port: 8080
