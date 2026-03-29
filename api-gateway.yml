@@ -10,6 +10,14 @@ spring:
             locator:
               enabled: false
           routes:
+          - id: order
+            uri:
+              http://localhost:8084
+            predicates:
+            - Path=/api/order/**
+            filters:
+            - StripPrefix=1
+
           - id: cart
             uri:
               http://localhost:8083
