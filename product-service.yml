@@ -1,14 +1,19 @@
 spring:
   application:
-    name: product-service
+    name: order-service
   datasource:
     username: postgres
     password: 123456
-    url: jdbc:postgresql://localhost:5432/productdb
+    url: jdbc:postgresql://postgres-db:5432/orderdb
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
 
 eureka:
   client:
@@ -18,5 +23,35 @@ eureka:
     prefer-ip-address: true
 
 
+resilience4j:
+  circuitbreaker:
+    instances:
+      cartClient:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+
+      productClient:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+
+  timelimiter:
+    instances:
+      cartClient:
+        timeout-duration: 3s
+
+      productClient:
+        timeout-duration: 2s
+  retry:
+    instances:
+      cartClient:
+        max-attempts: 3
+        wait-duration: 500ms
+
+
+
 server:
-  port: 8081
+  port: 8084
