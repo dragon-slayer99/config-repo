@@ -54,4 +54,4 @@ resilience4j:
 
 
 server:
-  port: 8084
+  port: 8081
