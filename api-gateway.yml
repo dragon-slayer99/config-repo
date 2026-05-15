@@ -64,13 +64,13 @@ springdoc:
     use-root-path: true
     urls:
       - name: Product Service
-        url: http://localhost:8081/v3/api-docs
+        url: http://localhost:8080/api/products/v3/api-docs  # Through gateway
       - name: User Service
-        url: http://localhost:8082/v3/api-docs
+        url: http://localhost:8080/api/users/v3/api-docs
       - name: Cart Service
-        url: http://localhost:8083/v3/api-docs
+        url: http://localhost:8080/api/cart/v3/api-docs
       - name: Order Service
-        url: http://localhost:8084/v3/api-docs
+        url: http://localhost:8080/api/orders/v3/api-docs
 
 server:
   port: 8080
