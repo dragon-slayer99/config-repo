@@ -9,10 +9,12 @@ spring:
           discovery:
             locator:
               enabled: false
+              lower-case-service-id: true
+
           routes:
           - id: order
             uri:
-              http://localhost:8084
+              lb://order-service:8084
             predicates:
             - Path=/api/orders/**
             filters:
@@ -20,7 +22,7 @@ spring:
 
           - id: cart
             uri:
-              http://localhost:8083
+              lb://cart-service:8083
             predicates:
             - Path=/api/cart/items/**
             filters:
@@ -28,19 +30,26 @@ spring:
           
           - id: user
             uri:
-              http://localhost:8082
+              lb://user-service:8082
             predicates:
-            - Path=/api/users/**,/api/admin/**
+            - Path=/api/users/**, /api/admin/**
             filters:
             - StripPrefix=1
 
           - id: product
             uri:
-              http://localhost:8081
+              lb://product-service:8081
             predicates:
             - Path=/api/products/**
             filters:
             - StripPrefix=1
+          - id: openapi
+            uri: 
+              http://localhost:8080
+            predicates:
+            - Path=/v3/api-docs/**
+            filters:
+            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
 
 eureka:
   client:
@@ -48,6 +57,11 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    use-root-path: true
 
 server:
   port: 8080

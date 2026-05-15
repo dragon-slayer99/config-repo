@@ -1,19 +1,14 @@
 spring:
   application:
-    name: order-service
+    name: product-service
   datasource:
     username: postgres
     password: 123456
-    url: jdbc:postgresql://localhost:5432/orderdb
+    url: jdbc:postgresql://localhost:5432/productdb
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
-  cloud:
-    openfeign:
-      circuitbreaker:
-        enabled: true
-
 
 eureka:
   client:
@@ -21,7 +16,6 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     prefer-ip-address: true
-
 
 resilience4j:
   circuitbreaker:
@@ -50,8 +44,6 @@ resilience4j:
       cartClient:
         max-attempts: 3
         wait-duration: 500ms
-
-
 
 server:
   port: 8081
