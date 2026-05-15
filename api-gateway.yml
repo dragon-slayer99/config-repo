@@ -62,6 +62,15 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     use-root-path: true
+    urls:
+      - name: Product Service
+        url: http://localhost:8081/v3/api-docs
+      - name: User Service
+        url: http://localhost:8082/v3/api-docs
+      - name: Cart Service
+        url: http://localhost:8083/v3/api-docs
+      - name: Order Service
+        url: http://localhost:8084/v3/api-docs
 
 server:
   port: 8080
