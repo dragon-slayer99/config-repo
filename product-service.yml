@@ -45,5 +45,11 @@ resilience4j:
         max-attempts: 3
         wait-duration: 500ms
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs  # Keep this as is
+  swagger-ui:
+    path: /swagger-ui.html
+
 server:
   port: 8081
