@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: api-gateway
@@ -12,49 +15,84 @@ spring:
               lower-case-service-id: true
 
           routes:
-          - id: order
-            uri:
-              http://localhost:8084
-            predicates:
-            - Path=/api/orders/**
-            filters:
-            - StripPrefix=1
 
-          - id: cart
-            uri:
-              http://localhost:8083
-            predicates:
-            - Path=/api/cart/items/**
-            filters:
-            - StripPrefix=1
-          
-          - id: user
-            uri:
-              http://localhost:8082
-            predicates:
-            - Path=/api/users/**, /api/admin/**
-            filters:
-            - StripPrefix=1
+            # =========================
+            # PRODUCT SERVICE
+            # =========================
+            - id: product-service
+              uri: http://localhost:8081
+              predicates:
+                - Path=/api/products/**
+              filters:
+                - StripPrefix=1
 
-          - id: product
-            uri:
-              http://localhost:8081
-            predicates:
-            - Path=/api/products/**
-            filters:
-            - StripPrefix=1
-          - id: openapi
-            uri: 
-              http://localhost:8080
-            predicates:
-            - Path=/v3/api-docs/**
-            filters:
-            - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+            # =========================
+            # USER SERVICE
+            # =========================
+            - id: user-service
+              uri: http://localhost:8082
+              predicates:
+                - Path=/api/users/**,/api/admin/**
+              filters:
+                - StripPrefix=1
+
+            # =========================
+            # CART SERVICE
+            # =========================
+            - id: cart-service
+              uri: http://localhost:8083
+              predicates:
+                - Path=/api/cart/items/**
+              filters:
+                - StripPrefix=1
+
+            # =========================
+            # ORDER SERVICE
+            # =========================
+            - id: order-service
+              uri: http://localhost:8084
+              predicates:
+                - Path=/api/orders/**
+              filters:
+                - StripPrefix=1
+
+            # ==================================================
+            # OPENAPI / SWAGGER ROUTES
+            # ==================================================
+
+            - id: product-openapi
+              uri: http://localhost:8081
+              predicates:
+                - Path=/product/v3/api-docs
+              filters:
+                - RewritePath=/product/v3/api-docs,/v3/api-docs
+
+            - id: user-openapi
+              uri: http://localhost:8082
+              predicates:
+                - Path=/user/v3/api-docs
+              filters:
+                - RewritePath=/user/v3/api-docs,/v3/api-docs
+
+            - id: cart-openapi
+              uri: http://localhost:8083
+              predicates:
+                - Path=/cart/v3/api-docs
+              filters:
+                - RewritePath=/cart/v3/api-docs,/v3/api-docs
+
+            - id: order-openapi
+              uri: http://localhost:8084
+              predicates:
+                - Path=/order/v3/api-docs
+              filters:
+                - RewritePath=/order/v3/api-docs,/v3/api-docs
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
   instance:
     prefer-ip-address: true
 
@@ -62,15 +100,16 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     use-root-path: true
+
     urls:
       - name: Product Service
-        url: http://localhost:8081/v3/api-docs
-      - name: User Service
-        url: http://localhost:8082/v3/api-docs
-      - name: Cart Service
-        url: http://localhost:8083/v3/api-docs
-      - name: Order Service
-        url: http://localhost:8084/v3/api-docs
+        url: /product/v3/api-docs
 
-server:
-  port: 8080
+      - name: User Service
+        url: /user/v3/api-docs
+
+      - name: Cart Service
+        url: /cart/v3/api-docs
+
+      - name: Order Service
+        url: /order/v3/api-docs

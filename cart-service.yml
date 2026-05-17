@@ -47,9 +47,10 @@ resilience4j:
 
 springdoc:
   api-docs:
-    path: /v3/api-docs  # Keep this as is
+    enabled: true
+
   swagger-ui:
-    path: /swagger-ui.html
+    enabled: true
 
 server:
   port: 8083
